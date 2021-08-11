@@ -21,10 +21,21 @@ const App = () => {
     setBookshelf(bookshelfCopy);
   }
 
+  const removeBook = (index) => {
+    const bookshelfCopy = [...bookshelf];
+    bookshelfCopy.splice(index, 1);
+
+    setBookshelf(bookshelfCopy);
+  }
+
   return (
     <>
       <Header addBookToBookshelf={addBookToBookshelf} />
-      <Bookshelf bookshelf={bookshelf} editBookshelf={editBookshelf} />
+      <Bookshelf
+        bookshelf={bookshelf}
+        editBookshelf={editBookshelf}
+        removeBook={removeBook}
+      />
     </>
   );
 }

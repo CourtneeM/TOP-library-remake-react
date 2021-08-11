@@ -122,5 +122,12 @@ header i {
   font-size: 0.8rem;
   color: lime;
 }
+.edit-book-card .fa-trash-alt {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 0.8rem;
+  color: red;
+}
 
 /*# sourceMappingURL=App.css.map */
