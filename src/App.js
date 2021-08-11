@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
+import Bookshelf from './components/Bookshelf';
 
 import './App.css';
 
@@ -16,6 +17,7 @@ const App = () => {
   return (
     <>
       <Header addBookToBookshelf={addBookToBookshelf} />
+      <Bookshelf bookshelf={bookshelf} />
     </>
   );
 }

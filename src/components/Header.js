@@ -3,22 +3,22 @@ import NewBookForm from './NewBookForm';
 
 const Header = (props) => {
   const [displayEditName, setDisplayEditName] = useState(false);
-  const [bookshelfName, setBookshelfName] = useState('Your Bookshelf');
-  
+  const [bookshelfName, setBookshelfName] = useState('My Bookshelf');
+
   const displayEditInput = () => {
     return (
-      <div>
+      <div className='edit-bookshelf-name'>
         <input type="text" value={bookshelfName} onChange={e => setBookshelfName(e.target.value)} />
-        <button onClick={() => setDisplayEditName(false)}>v/</button>
+        <i onClick={() => setDisplayEditName(false)} className="far fa-check-square"></i>
       </div>
     );
   }
 
   const displayBookshelfName = () => {
     return (
-      <div>
+      <div className='bookshelf-name'>
         <h1>{bookshelfName}</h1>
-        <button onClick={() => setDisplayEditName(true)}>edit</button>
+        <i onClick={() => setDisplayEditName(true)} className="far fa-edit"></i>
       </div>
     );
   }

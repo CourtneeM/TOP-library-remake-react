@@ -42,10 +42,14 @@ const NewBookForm = (props) => {
 
     props.addBookToBookshelf(book(title, author, pages, completed));
     setDisplayForm(false);
+    setTitle('');
+    setAuthor('');
+    setPages('');
+    setCompleted(false);
   }
 
   return (
-    <div>
+    <div className='new-book-form'>
       {displayForm ? displayNewBookForm() : <button onClick={() => setDisplayForm(true)}>Add Book</button>}
     </div>
   )

@@ -1,3 +1,102 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+i {
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
 header {
+  height: 160px;
   text-align: center;
 }
+header .bookshelf-name,
+header .edit-bookshelf-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+header .edit-bookshelf-name input {
+  width: 250px;
+  padding: 8px;
+  font-size: 1.4rem;
+  font-family: serif;
+  font-weight: 600;
+}
+header .new-book-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 600px;
+  margin: 0 auto;
+}
+header .new-book-form label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header .new-book-form input {
+  margin-top: 5px;
+}
+header .new-book-form button {
+  flex-basis: 150px;
+  margin-top: 20px;
+  padding: 10px 25px;
+}
+header button {
+  padding: 10px 25px;
+  color: #fff;
+  background: steelblue;
+  border: none;
+  border-radius: 5px;
+}
+header i {
+  margin-left: 20px;
+}
+
+.bookshelf-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 650px;
+  min-height: 200px;
+  margin: 50px auto 30px;
+  padding: 15px 20px;
+  border: 1px solid #000;
+}
+.bookshelf-container .empty-bookshelf-message {
+  align-self: center;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: sans-serif;
+}
+
+.book-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 160px;
+  height: 180px;
+  margin: 10px 20px;
+  padding: 30px 15px;
+  text-align: center;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+.book-card .fa-edit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.8rem;
+}
+
+/*# sourceMappingURL=App.css.map */
