@@ -14,10 +14,17 @@ const App = () => {
     setBookshelf(bookshelfCopy);
   }
 
+  const editBookshelf = (editedBook, index) => {
+    const bookshelfCopy = [...bookshelf];
+    bookshelfCopy.splice(index, 1, editedBook);
+
+    setBookshelf(bookshelfCopy);
+  }
+
   return (
     <>
       <Header addBookToBookshelf={addBookToBookshelf} />
-      <Bookshelf bookshelf={bookshelf} />
+      <Bookshelf bookshelf={bookshelf} editBookshelf={editBookshelf} />
     </>
   );
 }
