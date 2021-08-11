@@ -26,11 +26,11 @@ const NewBookForm = (props) => {
         </label>
         <label>
           Pages
-          <input type="number" value={pages} onChange={e => setPages(e.target.value)} />
+          <input type="number" value={pages} min={0} onChange={e => setPages(e.target.value)} className='pages-input' />
         </label>
         <label>
           Completed
-          <input type="checkbox" value={completed} onChange={e => setCompleted(e.target.checked)} />
+          <input type="checkbox" value={completed} onChange={e => setCompleted(e.target.checked)} className='completed-input' />
         </label>
         <button onClick={() => addBooktoBookshelf()}>Add to bookshelf</button>
       </>
@@ -38,7 +38,7 @@ const NewBookForm = (props) => {
   }
 
   const addBooktoBookshelf = () => {
-    if (title === '' || author === '' || !pages) return;
+    if (title === '' || author === '' || !pages || pages < 0) return;
 
     props.addBookToBookshelf(book(title, author, pages, completed));
     setDisplayForm(false);

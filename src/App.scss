@@ -4,10 +4,14 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Crimson Pro', serif;
 }
 
 i { cursor: pointer; }
 button { cursor: pointer; }
+
+.fa-edit { color: goldenrod; }
+.fa-check-square { color: lime; }
 
 // Header //
 
@@ -21,6 +25,7 @@ header {
     justify-content: center;
     align-items: center;
     margin: 30px 0;
+    font-size: 1.3rem;
   }
   
   .edit-bookshelf-name {
@@ -28,10 +33,10 @@ header {
       width: 250px;
       padding: 8px;
       font-size: 1.4rem;
-      font-family: serif;
-      font-weight: 600;
     }
   }
+
+  .fa-check-square { font-size: 1.1rem; }
 
   .new-book-form {
     display: flex;
@@ -45,16 +50,24 @@ header {
       display: flex;
       flex-direction: column;
       align-items: center;
+      font-size: 1.1rem;
     }
 
     input {
+      width: 150px;
       margin-top: 5px;
+      padding: 4px 8px;
+      font-size: 1rem;
     }
 
+    .pages-input { width: 75px; }
+    .completed-input { margin: 10px 0; }
+
     button {
-      flex-basis: 150px;
+      flex-basis: 170px;
       margin-top: 20px;
       padding: 10px 25px;
+      font-size: 1.1rem;
     }
   }
 
@@ -86,9 +99,7 @@ header {
   .empty-bookshelf-message {
     align-self: center;
     margin: 0 auto;
-    font-size: 1.1rem;
-    font-weight: 600;
-    font-family: sans-serif;
+    font-size: 1.4rem;
   }
 }
 
@@ -102,7 +113,7 @@ header {
   flex-direction: column;
   justify-content: space-between;
   width: 160px;
-  height: 180px;
+  height: 220px;
   margin: 10px 20px;
   padding: 30px 15px;
   text-align: center;
@@ -111,12 +122,14 @@ header {
 }
 
 .book-card {
+  .book-title { font-weight: 600; }
+  .book-author { font-style: italic; }
+  
   .fa-edit {
     position: absolute;
     top: 8px;
     right: 8px;
     font-size: 0.8rem;
-    color: goldenrod;
   }
 }
 
@@ -127,7 +140,6 @@ header {
     margin-bottom: 10px;
     padding: 2px;
     font-size: 1rem;
-    font-family: serif;
     text-align: center;
 
     &[type='checkbox'] {
@@ -135,18 +147,25 @@ header {
     }
   }
 
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+
+    input { margin-left: 10px; }
+  }
+
   .fa-check-square {
     position: absolute;
-    top: 8px;
+    bottom: 8px;
     right: 8px;
     font-size: 0.8rem;
-    color: lime;
   }
 
   .fa-trash-alt {
     position: absolute;
     bottom: 8px;
-    right: 8px;
+    left: 8px;
     font-size: 0.8rem;
     color: red;
   }

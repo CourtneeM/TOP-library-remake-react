@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Crimson Pro", serif;
 }
 
 i {
@@ -10,6 +11,14 @@ i {
 
 button {
   cursor: pointer;
+}
+
+.fa-edit {
+  color: goldenrod;
+}
+
+.fa-check-square {
+  color: lime;
 }
 
 header {
@@ -22,13 +31,15 @@ header .edit-bookshelf-name {
   justify-content: center;
   align-items: center;
   margin: 30px 0;
+  font-size: 1.3rem;
 }
 header .edit-bookshelf-name input {
   width: 250px;
   padding: 8px;
   font-size: 1.4rem;
-  font-family: serif;
-  font-weight: 600;
+}
+header .fa-check-square {
+  font-size: 1.1rem;
 }
 header .new-book-form {
   display: flex;
@@ -42,14 +53,25 @@ header .new-book-form label {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 1.1rem;
 }
 header .new-book-form input {
+  width: 150px;
   margin-top: 5px;
+  padding: 4px 8px;
+  font-size: 1rem;
+}
+header .new-book-form .pages-input {
+  width: 75px;
+}
+header .new-book-form .completed-input {
+  margin: 10px 0;
 }
 header .new-book-form button {
-  flex-basis: 150px;
+  flex-basis: 170px;
   margin-top: 20px;
   padding: 10px 25px;
+  font-size: 1.1rem;
 }
 header button {
   padding: 10px 25px;
@@ -74,9 +96,7 @@ header i {
 .bookshelf-container .empty-bookshelf-message {
   align-self: center;
   margin: 0 auto;
-  font-size: 1.1rem;
-  font-weight: 600;
-  font-family: sans-serif;
+  font-size: 1.4rem;
 }
 
 .book-card,
@@ -86,7 +106,7 @@ header i {
   flex-direction: column;
   justify-content: space-between;
   width: 160px;
-  height: 180px;
+  height: 220px;
   margin: 10px 20px;
   padding: 30px 15px;
   text-align: center;
@@ -94,12 +114,17 @@ header i {
   border-radius: 5px;
 }
 
+.book-card .book-title {
+  font-weight: 600;
+}
+.book-card .book-author {
+  font-style: italic;
+}
 .book-card .fa-edit {
   position: absolute;
   top: 8px;
   right: 8px;
   font-size: 0.8rem;
-  color: goldenrod;
 }
 
 .edit-book-card {
@@ -109,23 +134,29 @@ header i {
   margin-bottom: 10px;
   padding: 2px;
   font-size: 1rem;
-  font-family: serif;
   text-align: center;
 }
 .edit-book-card input[type=checkbox] {
   margin: 0 auto;
 }
+.edit-book-card .checkbox-label {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+.edit-book-card .checkbox-label input {
+  margin-left: 10px;
+}
 .edit-book-card .fa-check-square {
   position: absolute;
-  top: 8px;
+  bottom: 8px;
   right: 8px;
   font-size: 0.8rem;
-  color: lime;
 }
 .edit-book-card .fa-trash-alt {
   position: absolute;
   bottom: 8px;
-  right: 8px;
+  left: 8px;
   font-size: 0.8rem;
   color: red;
 }

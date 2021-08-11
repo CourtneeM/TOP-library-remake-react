@@ -19,10 +19,13 @@ const BookCard = ({ index, book, editBookshelf, removeBook }) => {
   const displayEditForm = () => {
     return (
       <div className='edit-book-card'>
-        <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
-        <input type="text" value={author} onChange={e => setAuthor(e.target.value)} />
-        <input type="text" value={pages} onChange={e => setPages(e.target.value)} />
-        <input type="checkbox" checked={completed} onChange={e => setCompleted(e.target.checked)} />
+        <input type="text" placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} />
+        <input type="text" placeholder='Author' value={author} onChange={e => setAuthor(e.target.value)} />
+        <input type="number" placeholder='# Pages' value={pages} min={0} onChange={e => setPages(e.target.value)} />
+        <label className='checkbox-label'>
+          Read
+          <input type="checkbox" checked={completed} onChange={e => setCompleted(e.target.checked)} />
+        </label>
         <i onClick={editBookInfo} className="far fa-check-square"></i>
         <i onClick={() => removeBook(index)} className="far fa-trash-alt"></i>
       </div>
@@ -32,16 +35,18 @@ const BookCard = ({ index, book, editBookshelf, removeBook }) => {
   const displayBookInfo = () => {
     return (
       <div className='book-card'>
-        <p>{book.title}</p>
-        <p>{book.author}</p>
-        <p>{book.pages}</p>
-        <p>{book.completed ? 'Read' : 'Not Read'}</p>
+        <p className='book-title'>{book.title}</p>
+        <p className='book-author'>{book.author}</p>
+        <p className='book-pages'>{book.pages} pages</p>
+        <p className='book-completed'>({book.completed ? 'Read' : 'Not Read'})</p>
         <i onClick={() => setEditMode(true)} className="far fa-edit"></i>
       </div>
     );
   }
 
   const editBookInfo = () => {
+    if (title === '' || author === '' || !pages || pages < 0) return;
+
     editBookshelf({title, author, pages, completed}, index);
     setEditMode(false);
   }
