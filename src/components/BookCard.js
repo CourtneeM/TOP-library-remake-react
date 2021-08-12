@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-const BookCard = ({ index, book, editBookshelf, removeBook }) => {
+const BookCard = ({ book, editBookshelf, removeBook }) => {
   const [editMode, setEditMode] = useState(false);
 
   const [title, setTitle] = useState(book.title);
   const [author, setAuthor] = useState(book.author);
   const [pages, setPages] = useState(book.pages);
   const [completed, setCompleted] = useState(book.completed);
+
+  const id = book.id;
 
   useEffect(() => {
     setTitle(book.title);
@@ -27,7 +29,7 @@ const BookCard = ({ index, book, editBookshelf, removeBook }) => {
           <input type="checkbox" checked={completed} onChange={e => setCompleted(e.target.checked)} />
         </label>
         <i onClick={editBookInfo} className="far fa-check-square"></i>
-        <i onClick={() => removeBook(index)} className="far fa-trash-alt"></i>
+        <i onClick={() => removeBook(book.id)} className="far fa-trash-alt"></i>
       </div>
     );
   }
@@ -47,7 +49,7 @@ const BookCard = ({ index, book, editBookshelf, removeBook }) => {
   const editBookInfo = () => {
     if (title === '' || author === '' || !pages || pages < 0) return;
 
-    editBookshelf({title, author, pages, completed}, index);
+    editBookshelf({title, author, pages, completed, id});
     setEditMode(false);
   }
 

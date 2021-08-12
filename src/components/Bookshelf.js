@@ -11,7 +11,6 @@ const Bookshelf = ({ bookshelf, editBookshelf, removeBook }) => {
           return (
             <div key={i}>
               <BookCard
-                index={i}
                 book={book}
                 editBookshelf={editBookshelf}
                 removeBook={removeBook}
