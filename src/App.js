@@ -1,21 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import firebase from './firebase';
+import SignInBar from './components/SignInBar';
 import Header from './components/Header';
 import Bookshelf from './components/Bookshelf';
 
 import './App.css';
+import reactDom from 'react-dom';
 
 const App = () => {
+  const [signedIn, setSignedIn] = useState(!!firebase.auth().currentUser);
+  const [user, setUser] = useState('test');
+  const [bookshelfName, setBookshelfName] = useState('');
   const [bookshelf, setBookshelf] = useState([]);
 
-  const ref = firebase.firestore().collection('bookshelves');
+  const ref = firebase.firestore().collection('users').doc(`${user}`);
+
+  const checkAuthState = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setUser(user);
+      }
+    });
+  };
+  
+  const getBookshelfName = () => {
+    ref.get().then(snapshot => {
+      setBookshelfName(Object.values(snapshot.data())[0] || 'My Bookshelf');
+    });
+  }
+
+  const updateBookshelfName = newBookshelfName => {
+    ref.update({ bookshelfName: newBookshelfName });
+    getBookshelfName();
+  }
 
   const getBookshelf = () => {
-    ref.onSnapshot(querySnapshot => {
+    ref.collection('bookshelf').onSnapshot(querySnapshot => {
       const books = [];
       querySnapshot.forEach(doc => {
         books.push(doc.data());
-        console.log(doc.id);
       });
       setBookshelf(books);
     });
@@ -25,50 +48,49 @@ const App = () => {
     getBookshelf();
   }, []);
 
-  const addBookToFirestore = newBook => {
-    return firebase.firestore().collection('bookshelves').add({...newBook})
+  const signIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+    .then(res => {
+      setSignedIn(true);
+    });
+  }
+  
+  const signOut = () => {
+    firebase.auth().signOut()
+    .then(res => {
+      setSignedIn(false);
+    });
+  }
+
+  const addBookToBookshelf = newBook => {
+    return ref.collection('bookshelf').add({...newBook})
     .then(docRef => firebase.firestore().collection('bookshelves').doc(docRef.id).update({id: docRef.id}) )
     .catch(error => console.error('Error writing new book to database', error));
   }
-  
-  const editBookInFirestore = ({ title, author, pages, completed, id }) => {
-    return firebase.firestore().collection('bookshelves').doc(id).update({
+
+  const editBookshelf = ({ title, author, pages, completed, id }) => {
+    return ref.collection('bookshelf').doc(id).update({
       title: title, author: author, pages: pages, completed: completed
     });
   }
 
-  const removeBookFromFirestore = id => {
-    return firebase.firestore().collection('bookshelves').doc(id).delete()
+  const removeBook = (id) => {
+    return ref.collection('bookshelf').doc(id).delete()
     .catch(error => console.error('Error removing book', error));
   }
 
-  const addBookToBookshelf = newBook => {
-    addBookToFirestore(newBook);
-    // const bookshelfCopy = [...bookshelf];
-    // bookshelfCopy.push(newBook);
-
-    // setBookshelf(bookshelfCopy);
-  }
-
-  const editBookshelf = (editedBook) => {
-    editBookInFirestore(editedBook);
-    // const bookshelfCopy = [...bookshelf];
-    // bookshelfCopy.splice(index, 1, editedBook);
-
-    // setBookshelf(bookshelfCopy);
-  }
-
-  const removeBook = (id) => {
-    removeBookFromFirestore(id);
-    // const bookshelfCopy = [...bookshelf];
-    // bookshelfCopy.splice(index, 1);
-
-    // setBookshelf(bookshelfCopy);
-  }
+  checkAuthState();
+  getBookshelfName();
 
   return (
     <>
-      <Header addBookToBookshelf={addBookToBookshelf} />
+      <SignInBar signedIn={signedIn} signIn={signIn} signOut={signOut} user={user}/>
+      <Header
+        bookshelfName={bookshelfName}
+        addBookToBookshelf={addBookToBookshelf}
+        updateBookshelfName={updateBookshelfName}
+      />
       <Bookshelf
         bookshelf={bookshelf}
         editBookshelf={editBookshelf}

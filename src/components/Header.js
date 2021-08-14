@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NewBookForm from './NewBookForm';
 
 const Header = (props) => {
   const [displayEditName, setDisplayEditName] = useState(false);
-  const [bookshelfName, setBookshelfName] = useState('My Bookshelf');
+  const [newBookshelfName, setNewBookshelfName] = useState(props.bookshelfName);
+
+  useEffect(() => {
+    setNewBookshelfName(props.bookshelfName);
+  }, [props.bookshelfName]);
+
+  const updateBookshelfName = () => {
+    setDisplayEditName(false);
+    props.updateBookshelfName(newBookshelfName);
+  }
 
   const displayEditInput = () => {
     return (
       <div className='edit-bookshelf-name'>
-        <input type="text" value={bookshelfName} onChange={e => setBookshelfName(e.target.value)} />
-        <i onClick={() => setDisplayEditName(false)} className="far fa-check-square"></i>
+        <input type="text" value={newBookshelfName} onChange={e => setNewBookshelfName(e.target.value)} />
+        <i onClick={updateBookshelfName} className="far fa-check-square"></i>
       </div>
     );
   }
@@ -17,7 +26,7 @@ const Header = (props) => {
   const displayBookshelfName = () => {
     return (
       <div className='bookshelf-name'>
-        <h1>{bookshelfName}</h1>
+        <h1>{props.bookshelfName}</h1>
         <i onClick={() => setDisplayEditName(true)} className="far fa-edit"></i>
       </div>
     );
