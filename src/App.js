@@ -84,6 +84,25 @@ const App = () => {
     });
   }
 
+  const updateOrderId = (action, removedOrderId) => {
+    switch (action) {
+      case 'increment':
+        // 'increment books starting from index'
+        break;
+      case 'decrement':
+        ref.doc(`${user.uid}`).collection('bookshelf').get().then(querySnapshot => {
+          querySnapshot.docs.forEach(doc => {
+            if (doc.data().orderId > removedOrderId) {
+              doc.ref.update({ orderId: doc.data().orderId - 1 })
+            }
+          });
+        });
+        break;
+      default:
+        console.error('Error updating order ID');
+    }
+  }
+
   const addBookToBookshelf = newBook => {
     let numBooks;
     ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => numBooks = snapshot.size);
@@ -103,11 +122,18 @@ const App = () => {
       return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
         title: title, author: author, pages: pages, completed: completed, orderId: orderId > numBooks ? numBooks : orderId
       });
+    })
+    .catch(error => {
+      console.error('Error updating book', error);
     });
   }
 
   const removeBook = (id) => {
-    return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).delete()
+    ref.doc(`${user.uid}`).collection('bookshelf').doc(id).get().then(snapshot => snapshot.data().orderId)
+    .then(res => {
+      ref.doc(`${user.uid}`).collection('bookshelf').doc(id).delete();
+      updateOrderId('decrement', res);
+    })
     .catch(error => console.error('Error removing book', error));
   }
 
