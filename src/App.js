@@ -37,7 +37,7 @@ const App = () => {
   }
 
   const getBookshelf = () => {
-    ref.doc(`${user.uid}`).collection('bookshelf').onSnapshot(querySnapshot => {
+    ref.doc(`${user.uid}`).collection('bookshelf').orderBy('orderId').onSnapshot(querySnapshot => {
       const books = [];
       querySnapshot.forEach(doc => {
         books.push(doc.data());
@@ -85,8 +85,14 @@ const App = () => {
   }
 
   const addBookToBookshelf = newBook => {
+    let numBooks;
+    ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => numBooks = snapshot.size);
+
     return ref.doc(`${user.uid}`).collection('bookshelf').add({...newBook})
-    .then(docRef => ref.doc(`${user.uid}`).collection('bookshelf').doc(docRef.id).update({id: docRef.id}) )
+    .then(docRef => ref.doc(`${user.uid}`).collection('bookshelf').doc(docRef.id).update({
+      id: docRef.id,
+      orderId: numBooks + 1,
+    }))
     .catch(error => console.error('Error writing new book to database', error));
   }
 
