@@ -122,6 +122,12 @@ header {
 }
 
 .book-card {
+  .book-order-id {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+
   .book-title { font-weight: 600; }
   .book-author { font-style: italic; }
   

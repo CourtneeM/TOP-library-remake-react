@@ -96,9 +96,9 @@ const App = () => {
     .catch(error => console.error('Error writing new book to database', error));
   }
 
-  const editBookshelf = ({ title, author, pages, completed, id }) => {
+  const editBookshelf = ({ title, author, pages, completed, orderId, id }) => {
     return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
-      title: title, author: author, pages: pages, completed: completed
+      title: title, author: author, pages: pages, completed: completed, orderId: orderId
     });
   }
 

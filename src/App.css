@@ -114,6 +114,11 @@ header i {
   border-radius: 5px;
 }
 
+.book-card .book-order-id {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
 .book-card .book-title {
   font-weight: 600;
 }

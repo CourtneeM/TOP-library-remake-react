@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 const BookCard = ({ book, editBookshelf, removeBook }) => {
   const [editMode, setEditMode] = useState(false);
 
+  const [orderId, setOrderId] = useState(book.orderId);
   const [title, setTitle] = useState(book.title);
   const [author, setAuthor] = useState(book.author);
   const [pages, setPages] = useState(book.pages);
@@ -21,6 +22,7 @@ const BookCard = ({ book, editBookshelf, removeBook }) => {
   const displayEditForm = () => {
     return (
       <div className='edit-book-card'>
+        <input type="number" placeholder='#' value={orderId} min={1} onChange={e => setOrderId(Number(e.target.value))} />
         <input type="text" placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} />
         <input type="text" placeholder='Author' value={author} onChange={e => setAuthor(e.target.value)} />
         <input type="number" placeholder='# Pages' value={pages} min={0} onChange={e => setPages(e.target.value)} />
@@ -37,6 +39,7 @@ const BookCard = ({ book, editBookshelf, removeBook }) => {
   const displayBookInfo = () => {
     return (
       <div className='book-card'>
+        <p className='book-order-id'>#{book.orderId}</p>
         <p className='book-title'>{book.title}</p>
         <p className='book-author'>{book.author}</p>
         <p className='book-pages'>{book.pages} pages</p>
@@ -49,7 +52,7 @@ const BookCard = ({ book, editBookshelf, removeBook }) => {
   const editBookInfo = () => {
     if (title === '' || author === '' || !pages || pages < 0) return;
 
-    editBookshelf({title, author, pages, completed, id});
+    editBookshelf({title, author, pages, completed, orderId, id});
     setEditMode(false);
   }
 
