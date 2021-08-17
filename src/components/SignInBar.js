@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const SignInBar = ({ signedIn, signIn, signOut, user }) => {
-  const [userName, setUserName] = useState(user);
-
-  useEffect(() => {
-    signedIn && user ? setUserName(user.displayName) : setUserName('Test');
-  }, [signedIn, user]);
-
+const SignInBar = ({ signOut, user }) => {
+  
   return (
     <div>
-      <p>{userName}</p>
-      {
-        signedIn ?
-        <button onClick={signOut}>Sign Out</button> :
-        <button onClick={signIn}>Sign In</button>
-      }
+      <p>{user.displayName}</p>
+      <button onClick={signOut}>Sign Out</button>
     </div>
   );
 }
