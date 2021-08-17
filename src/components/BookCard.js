@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 const BookCard = ({ book, editBookshelf, removeBook }) => {
   const [editMode, setEditMode] = useState(false);
 
-  const [orderId, setOrderId] = useState(book.orderId);
   const [title, setTitle] = useState(book.title);
   const [author, setAuthor] = useState(book.author);
   const [pages, setPages] = useState(book.pages);
   const [completed, setCompleted] = useState(book.completed);
+  const [orderId, setOrderId] = useState(book.orderId);
 
   const id = book.id;
 
@@ -17,6 +17,7 @@ const BookCard = ({ book, editBookshelf, removeBook }) => {
     setPages(book.pages);
     setCompleted(book.completed);
     setEditMode(false);
+    setOrderId(book.orderId);
   }, [book]);
 
   const displayEditForm = () => {

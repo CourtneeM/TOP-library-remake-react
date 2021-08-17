@@ -97,8 +97,12 @@ const App = () => {
   }
 
   const editBookshelf = ({ title, author, pages, completed, orderId, id }) => {
-    return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
-      title: title, author: author, pages: pages, completed: completed, orderId: orderId
+    let numBooks;
+    ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => numBooks = snapshot.size)
+    .then(() => {
+      return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
+        title: title, author: author, pages: pages, completed: completed, orderId: orderId > numBooks ? numBooks : orderId
+      });
     });
   }
 
