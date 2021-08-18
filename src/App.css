@@ -21,6 +21,12 @@ button {
   color: lime;
 }
 
+.loading-message {
+  margin-top: 200px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
 header {
   height: 160px;
   text-align: center;

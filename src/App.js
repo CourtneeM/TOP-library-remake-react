@@ -3,11 +3,13 @@ import firebase from './firebase';
 import Home from './components/Home';
 import SignInBar from './components/SignInBar';
 import Header from './components/Header';
+import Loading from './components/Loading';
 import Bookshelf from './components/Bookshelf';
 
 import './App.css';
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
   const [signedIn, setSignedIn] = useState(!!firebase.auth().currentUser);
   const [user, setUser] = useState('');
   const [bookshelfName, setBookshelfName] = useState('');
@@ -63,13 +65,16 @@ const App = () => {
     if (user) setSignedIn(true);
   }, [user]);
 
+  useEffect(() => {
+    setLoading(false);
+  }, [bookshelf])
+
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
     .then(() => {
       checkAuthState();
-    })
-    .then(() => {
+      setLoading(true);
     });
   }
   
@@ -169,16 +174,22 @@ const App = () => {
         signedIn ?
         <>
           <SignInBar signedIn={signedIn} signIn={signIn} signOut={signOut} user={user}/>
-          <Header
-            bookshelfName={bookshelfName}
-            addBookToBookshelf={addBookToBookshelf}
-            updateBookshelfName={updateBookshelfName}
-          />
-          <Bookshelf
-            bookshelf={bookshelf}
-            editBookshelf={editBookshelf}
-            removeBook={removeBook}
-          />
+          {
+            loading ?
+            <Loading /> :
+            <>
+              <Header
+                bookshelfName={bookshelfName}
+                addBookToBookshelf={addBookToBookshelf}
+                updateBookshelfName={updateBookshelfName}
+              />
+              <Bookshelf
+                bookshelf={bookshelf}
+                editBookshelf={editBookshelf}
+                removeBook={removeBook}
+              />
+            </>
+          }
         </> :
         <Home signIn={signIn}/>
       }
