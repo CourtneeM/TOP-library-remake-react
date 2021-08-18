@@ -51,32 +51,32 @@ const App = () => {
   useEffect(() => {
     if (!user) return;
 
-    // ref.doc(`${user.uid}`).set({
-    //   bookshelfName: '',
-    //   userName: ''
-    // });
-
     let uids = []; 
-    ref.get().then(querySnapshot => querySnapshot.forEach(doc => uids.push(doc.id)));
-    if (!uids.includes(ref.doc(`${user.uid}`))) {
-      ref.doc(`${user.uid}`).set({
-        bookshelfName: bookshelfName,
-        userName: firebase.auth().currentUser.displayName,
-      })
-    }
+    ref.get().then(querySnapshot => querySnapshot.forEach(doc => uids.push(doc.id)))
+    .then(() => {
+      if (!uids.includes(user.uid)) {
+        ref.doc(`${user.uid}`).set({
+          bookshelfName: bookshelfName,
+          userName: firebase.auth().currentUser.displayName,
+        })
+      }
+    })
+    .then(() => {
+      getBookshelfName();
+      getBookshelf();
+    })
+    .then(() => {
+      if (ref.doc(`${user.uid}`).get().then(snapshot => snapshot.data().bookshelfName)) {
+        ref.doc(`${user.uid}`).update({ userName: firebase.auth().currentUser.displayName });
+      } else {
+        ref.doc(`${user.uid}`).set({
+          bookshelfName: bookshelfName,
+          userName: firebase.auth().currentUser.displayName,
+        });
+      }
+    })
+    .catch(error => console.error('Error retrieving document information', error));
 
-    getBookshelfName();
-    getBookshelf();
-
-    if (ref.doc(`${user.uid}`).get().then(snapshot => snapshot.data().bookshelfName)) {
-      ref.doc(`${user.uid}`).update({ userName: firebase.auth().currentUser.displayName });
-    } else {
-      ref.doc(`${user.uid}`).set({
-        bookshelfName: bookshelfName,
-        userName: firebase.auth().currentUser.displayName,
-      });
-    }
-    
     if (user) setSignedIn(true);
   }, [user]);
 
