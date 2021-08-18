@@ -84,16 +84,31 @@ const App = () => {
     });
   }
 
-  const updateOrderId = (action, removedOrderId) => {
+  const updateOrderId = (action, oldOrderId, selectedOrderId, id) => {
     switch (action) {
-      case 'increment':
-        // 'increment books starting from index'
+      case 'increase book order':
+        ref.doc(`${user.uid}`).collection('bookshelf').get().then(querySnapshot => {
+          querySnapshot.docs.forEach(doc => {
+            if (doc.data().id === id) return;
+            if (doc.data().orderId > oldOrderId && doc.data().orderId <= selectedOrderId)
+              doc.ref.update({ orderId: doc.data().orderId - 1 });
+          });
+        });
+        break;
+      case 'decrease book order':
+        ref.doc(`${user.uid}`).collection('bookshelf').get().then(querySnapshot => {
+          querySnapshot.docs.forEach(doc => {
+            if (doc.data().id === id) return;
+            if (doc.data().orderId < oldOrderId && doc.data().orderId >= selectedOrderId)
+              doc.ref.update({ orderId: doc.data().orderId + 1 });
+          });
+        });
         break;
       case 'decrement':
         ref.doc(`${user.uid}`).collection('bookshelf').get().then(querySnapshot => {
           querySnapshot.docs.forEach(doc => {
-            if (doc.data().orderId > removedOrderId) {
-              doc.ref.update({ orderId: doc.data().orderId - 1 })
+            if (doc.data().orderId >= selectedOrderId) {
+              doc.ref.update({ orderId: doc.data().orderId - 1 });
             }
           });
         });
@@ -104,14 +119,14 @@ const App = () => {
   }
 
   const addBookToBookshelf = newBook => {
-    let numBooks;
-    ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => numBooks = snapshot.size);
-
-    return ref.doc(`${user.uid}`).collection('bookshelf').add({...newBook})
-    .then(docRef => ref.doc(`${user.uid}`).collection('bookshelf').doc(docRef.id).update({
-      id: docRef.id,
-      orderId: numBooks + 1,
-    }))
+    ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => snapshot.size)
+    .then(numBooks => {
+      ref.doc(`${user.uid}`).collection('bookshelf').add({...newBook})
+      .then(docRef => ref.doc(`${user.uid}`).collection('bookshelf').doc(docRef.id).update({
+        id: docRef.id,
+        orderId: numBooks + 1,
+      }))
+    })
     .catch(error => console.error('Error writing new book to database', error));
   }
 
@@ -119,9 +134,19 @@ const App = () => {
     let numBooks;
     ref.doc(`${user.uid}`).collection('bookshelf').get().then(snapshot => numBooks = snapshot.size)
     .then(() => {
-      return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
+      return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).get().then(snapshot => snapshot.data().orderId)
+    })
+    .then(oldOrderId => {
+      
+      ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
         title: title, author: author, pages: pages, completed: completed, orderId: orderId > numBooks ? numBooks : orderId
       });
+
+      if (oldOrderId === orderId) return;
+
+      const action = orderId > oldOrderId  ? 'increase book order' : 'decrease book order';
+      console.log(action, oldOrderId, orderId);
+      updateOrderId(action, oldOrderId, orderId, id);
     })
     .catch(error => {
       console.error('Error updating book', error);
