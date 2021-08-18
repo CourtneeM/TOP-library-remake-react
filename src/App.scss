@@ -24,6 +24,7 @@ button { cursor: pointer; }
 // Header //
 
 header {
+  min-width: 425px;
   height: 160px;
   text-align: center;
 
@@ -51,7 +52,8 @@ header {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    width: 600px;
+    min-width: 425px;
+    max-width: 600px;
     margin: 0 auto;
 
     label {
@@ -98,11 +100,12 @@ header {
 .bookshelf-container {
   display: flex;
   flex-wrap: wrap;
-  width: 650px;
+  justify-content: center;
+  min-width: 425px;
+  max-width: 650px;
   min-height: 200px;
   margin: 50px auto 30px;
   padding: 15px 20px;
-  border: 1px solid #000;
 
   .empty-bookshelf-message {
     align-self: center;

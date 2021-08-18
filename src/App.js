@@ -21,6 +21,7 @@ const App = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUser(user);
+        setSignedIn(!!firebase.auth().currentUser);
       }
     });
   };
@@ -77,7 +78,6 @@ const App = () => {
     })
     .catch(error => console.error('Error retrieving document information', error));
 
-    if (user) setSignedIn(true);
   }, [user]);
 
   useEffect(() => {
@@ -86,7 +86,10 @@ const App = () => {
 
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      firebase.auth().signInWithPopup(provider)
+    })
     .then(() => {
       checkAuthState();
       setLoading(true);
@@ -96,7 +99,7 @@ const App = () => {
   const signOut = () => {
     firebase.auth().signOut()
     .then(() => {
-      setSignedIn(false);
+      setSignedIn(!!firebase.auth().currentUser);
       setUser('');
       setBookshelfName('');
       setBookshelf([]);
@@ -179,6 +182,8 @@ const App = () => {
     })
     .catch(error => console.error('Error removing book', error));
   }
+
+  checkAuthState();
 
   return (
     <>
