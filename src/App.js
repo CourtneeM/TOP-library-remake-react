@@ -26,31 +26,33 @@ const App = () => {
     });
   };
   
-  const getBookshelfName = () => {
-    ref.doc(`${user.uid}`).get().then(snapshot => {
-      const bookshelfName = snapshot.data().bookshelfName ? snapshot.data().bookshelfName : `${user.displayName}'s Bookshelf`;
-      setBookshelfName(bookshelfName);
-      ref.doc(`${user.uid}`).update({ bookshelfName: bookshelfName });
-    });
-  }
-
   const updateBookshelfName = newBookshelfName => {
     ref.doc(`${user.uid}`).update({ bookshelfName: newBookshelfName });
     setBookshelfName(newBookshelfName);
   }
 
-  const getBookshelf = () => {
-    ref.doc(`${user.uid}`).collection('bookshelf').orderBy('orderId').onSnapshot(querySnapshot => {
-      const books = [];
-      querySnapshot.forEach(doc => {
-        books.push(doc.data());
-      });
-      setBookshelf(books);
-    });
-  }
-
   useEffect(() => {
     if (!user) return;
+
+    let ref = firebase.firestore().collection('users');
+
+    const getBookshelfName = () => {
+      ref.doc(`${user.uid}`).get().then(snapshot => {
+        const bookshelfName = snapshot.data().bookshelfName ? snapshot.data().bookshelfName : `${user.displayName}'s Bookshelf`;
+        setBookshelfName(bookshelfName);
+        ref.doc(`${user.uid}`).update({ bookshelfName: bookshelfName });
+      });
+    }
+  
+    const getBookshelf = () => {
+      ref.doc(`${user.uid}`).collection('bookshelf').orderBy('orderId').onSnapshot(querySnapshot => {
+        const books = [];
+        querySnapshot.forEach(doc => {
+          books.push(doc.data());
+        });
+        setBookshelf(books);
+      });
+    }
 
     let uids = []; 
     ref.get().then(querySnapshot => querySnapshot.forEach(doc => uids.push(doc.id)))
@@ -78,7 +80,7 @@ const App = () => {
     })
     .catch(error => console.error('Error retrieving document information', error));
 
-  }, [user]);
+  }, [user, bookshelfName]);
 
   useEffect(() => {
     setLoading(false);
