@@ -104,7 +104,7 @@ const App = () => {
     });
   }
 
-  const updateOrderId = (action, oldOrderId, selectedOrderId, id) => {
+  const updateOrderId = (action, selectedOrderId, oldOrderId, id) => {
     switch (action) {
       case 'increase book order':
         ref.doc(`${user.uid}`).collection('bookshelf').get().then(querySnapshot => {
@@ -157,7 +157,6 @@ const App = () => {
       return ref.doc(`${user.uid}`).collection('bookshelf').doc(id).get().then(snapshot => snapshot.data().orderId)
     })
     .then(oldOrderId => {
-      
       ref.doc(`${user.uid}`).collection('bookshelf').doc(id).update({
         title: title, author: author, pages: pages, completed: completed, orderId: orderId > numBooks ? numBooks : orderId
       });
@@ -165,8 +164,7 @@ const App = () => {
       if (oldOrderId === orderId) return;
 
       const action = orderId > oldOrderId  ? 'increase book order' : 'decrease book order';
-      console.log(action, oldOrderId, orderId);
-      updateOrderId(action, oldOrderId, orderId, id);
+      updateOrderId(action, orderId, oldOrderId, id);
     })
     .catch(error => {
       console.error('Error updating book', error);
@@ -184,7 +182,6 @@ const App = () => {
 
   return (
     <>
-      <button onClick={() => console.log(user)}>Log User</button>
       {
         signedIn ?
         <>
