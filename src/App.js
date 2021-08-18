@@ -50,6 +50,21 @@ const App = () => {
 
   useEffect(() => {
     if (!user) return;
+
+    // ref.doc(`${user.uid}`).set({
+    //   bookshelfName: '',
+    //   userName: ''
+    // });
+
+    let uids = []; 
+    ref.get().then(querySnapshot => querySnapshot.forEach(doc => uids.push(doc.id)));
+    if (!uids.includes(ref.doc(`${user.uid}`))) {
+      ref.doc(`${user.uid}`).set({
+        bookshelfName: bookshelfName,
+        userName: firebase.auth().currentUser.displayName,
+      })
+    }
+
     getBookshelfName();
     getBookshelf();
 
